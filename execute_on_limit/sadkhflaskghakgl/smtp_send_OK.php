@@ -1,5 +1,7 @@
 <?php
 
+echo '12345';
+
 //Get ENV
 	$env = file_get_contents('../../../.env', true);
 	$env = explode("\n",$env);
@@ -7,11 +9,13 @@
 	foreach($env as $data){
 		$data = explode("=",$data);
 		$getEnv[$data[0]] = $data[1];
+		if(count($data) > 2) $getEnv[$data[0]] = $getEnv[$data[0]] . '='. $data[2];
 	}
 	$env = $getEnv;
 	unset($getEnv);
-
-namespace PortoContactForm;
+//return $env;
+//var_dump($env);
+//namespace PortoContactForm;
 
 session_cache_limiter('nocache');
 header('Expires: ' . gmdate('r', 0));
@@ -32,14 +36,14 @@ $emailfrom = $env['emailfrom'];
 $namefrom = $env['namefrom'];
 
 // If the e-mail is not working, change the debug option to 2 | $debug = 2;
-$debug = 0;
+$debug = 2;
 
 // If contact form don't has the subject input change the value of subject here
 $subject = ( isset($_GET['subject']) ) ? $_GET['subject'] : 'Integration of execute on limit notification!';
 
 $day = date("Y-m-d");
 $getmessage = ( isset($_GET['message']) ) ? $_GET['message'] : 'Integration of execute on limit notification messages!';
-$message = 'We have '.$getmessage.' calls limited for today! You can access here: '.$env['reportdetailsurl'].'?day='.$day.' or '.$env['reportalldata'].'?day='.$day;
+$message = 'We have '.$getmessage.' calls limited for today! You can access here: '.$env['reportdetailsurl'].'?day='.$day.' or '.$env['reportalldata'].'?day='.$day.'. For domain summary by day: '.$env['reporturl'].'. For domain summary by month: '.$env['reporturlmonthly'].'.';
 
 $mail = new PHPMailer(true);
 
@@ -89,3 +93,4 @@ try {
 if ($debug == 0) {
 	echo json_encode($arrResult);
 }
+

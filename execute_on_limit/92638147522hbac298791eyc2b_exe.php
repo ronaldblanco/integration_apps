@@ -236,8 +236,8 @@ $param=array('login'=>$SMSuser,'secret'=>$SMSpass,'sender'=>$sender,'recipient'=
 	echo $e->getMessage();
 }*/
 
-fwrite($myfile, file_put_contents("log.txt", ob_get_flush()));
-fclose($myfile);
+//fwrite($myfile, file_put_contents("log.txt", ob_get_flush()));
+//fclose($myfile);
 
 /**/
 
