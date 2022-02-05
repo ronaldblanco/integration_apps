@@ -1,9 +1,0 @@
-array(3) {
-  ["from"]=>
-  string(4) "test"
-  ["to"]=>
-  string(6) "testto"
-  ["domain"]=>
-  string(19) "test.extensivex.com"
-}
-Connected successfullyNew record created successfully180
