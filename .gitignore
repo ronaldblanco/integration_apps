@@ -4,6 +4,8 @@ bin-release/
 [Oo]bj/
 [Bb]in/
 
+execute_on_limit/log.txt
+
 # Other files and folders
 .settings/
 
