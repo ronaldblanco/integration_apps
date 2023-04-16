@@ -16,6 +16,24 @@ $username = $env['username'];
 $password = $env['password'];
 $dbname = $env['dbname'];
 
+$domains = json_decode(file_get_contents('https://'.$env['pbx_domains_url_info']."?key=".$env['pbx_domains_url_info_key']),true);
+$domainRows = $domains['data']['domains'];
+//var_dump($domainRows);
+
+function getDomainDescription($domainPara,$domainRows){
+	//var_dump($domainRows);
+	$result = '';
+	foreach($domainRows as $row){
+		//var_dump($row['domain_description']);
+		if($domainPara == $row['domain_name']) {
+			$result = $row['domain_description'];
+			//var_dump($domain['domain_description']);
+		}
+	}
+	
+	return $result;
+}
+
 $day = date("Y-m-d");
 if(isset($_POST['day'])) $day = $_POST['day'];
 if(isset($_GET['day'])) $day = $_GET['day'];
@@ -121,7 +139,7 @@ $conn->close();
 	<tr>
 	  <th scope="row"><?php echo $row['date'];?></th>
 	  <td><?php echo $row['from_num'];?></td>
-	  <td><?php echo $row['domain'];?></td>
+	  <td><?php echo getDomainDescription($row['domain'],$domainRows)." (".$row['domain'].")";?></td>
 				
     </tr>
 	<?php endforeach; ?>
