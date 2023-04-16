@@ -43,7 +43,7 @@ $subject = ( isset($_GET['subject']) ) ? $_GET['subject'] : 'Integration of exec
 
 $day = date("Y-m-d");
 $getmessage = ( isset($_GET['message']) ) ? $_GET['message'] : 'Integration of execute on limit notification messages!';
-$message = 'We have '.$getmessage.' calls limited for today! You can access here: '.$env['reportdetailsurl'].'?day='.$day.' or '.$env['reportalldata'].'?day='.$day.'. For domain summary by day: '.$env['reporturl'].'. For domain summary by month: '.$env['reporturlmonthly'].'.';
+$message =  '<h4>We have '.$getmessage.' calls limited for today!<br></br> You can access here for domain summary: '.''.$env['reporturl'].'.<br></br> For domain summary by month: '.$env['reporturlmonthly'].'.</h4>';
 
 $mail = new PHPMailer(true);
 
