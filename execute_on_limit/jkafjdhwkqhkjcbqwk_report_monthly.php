@@ -16,6 +16,24 @@ $username = $env['username'];
 $password = $env['password'];
 $dbname = $env['dbname'];
 
+$domains = json_decode(file_get_contents('https://'.$env['pbx_domains_url_info']."?key=".$env['pbx_domains_url_info_key']),true);
+$domainRows = $domains['data']['domains'];
+//var_dump($domainRows);
+
+function getDomainDescription($domainPara,$domainRows){
+	//var_dump($domainRows);
+	$result = '';
+	foreach($domainRows as $row){
+		//var_dump($row['domain_description']);
+		if($domainPara == $row['domain_name']) {
+			$result = $row['domain_description'];
+			//var_dump($domain['domain_description']);
+		}
+	}
+	
+	return $result;
+}
+
 $day = date("Y-m-d");
 if(isset($_POST['day'])) $day = $_POST['day'];
 
@@ -120,7 +138,7 @@ $conn->close();
 	<tr>
 	  <th scope="row"><?php echo date("Y-m-d",strtotime($row['date']));?></th>
 	  <td><?php echo $row['count'];?></td>
-	  <td><a href="<?php echo $env['reportdetailsurl']; ?>?day=<?php echo date("Y-m-d",strtotime($row['date']));?>"><?php echo $row['domain'];?></a></td>
+	  <td><a href="<?php echo $env['reportdetailsurl']; ?>?day=<?php echo date("Y-m-d",strtotime($row['date'])).'&domain='.$row['domain'];?>"><?php echo getDomainDescription($row['domain'],$domainRows)." (".$row['domain'].")";?></a></td>
 				
     </tr>
 	<?php endforeach; ?>
