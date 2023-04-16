@@ -16,9 +16,31 @@ $username = $env['username'];
 $password = $env['password'];
 $dbname = $env['dbname'];
 
+$domains = json_decode(file_get_contents('https://'.$env['pbx_domains_url_info']."?key=".$env['pbx_domains_url_info_key']),true);
+$domainRows = $domains['data']['domains'];
+//var_dump($domainRows);
+
+function getDomainDescription($domainPara,$domainRows){
+	//var_dump($domainRows);
+	$result = '';
+	foreach($domainRows as $row){
+		//var_dump($row['domain_description']);
+		if($domainPara == $row['domain_name']) {
+			$result = $row['domain_description'];
+			//var_dump($domain['domain_description']);
+		}
+	}
+	
+	return $result;
+}
+
+//getDomainDescription("bigcheese.extensivex.com",$domainRows);
+	
 $day = date("Y-m-d");
+$selectedDomain = null;
 if(isset($_POST['day'])) $day = $_POST['day'];
 if(isset($_GET['day'])) $day = $_GET['day'];
+if(isset($_GET['domain'])) $selectedDomain = $_GET['domain'];
 
 $alert = 0;
 $message = "";
@@ -118,15 +140,20 @@ $conn->close();
     </tr>	
 	</thead>
 	<tbody>
-	<?php foreach ($daily_report as $row): array_map('htmlentities', $row);?>
+	<?php foreach ($daily_report as $row): array_map('htmlentities', $row);
+		if((isset($selectedDomain) && $selectedDomain == $row['domain']) || !isset($selectedDomain)){
+		?>
 	<tr>
 	  <th scope="row"><?php echo date("Y-m-d",strtotime($row['date']));?></th>
 	  <td><?php echo $row['count'];?></td>
 	<td><?php echo $row['from'];?></td>
-	  <td><?php echo $row['domain'];?></td>
+	  <td><?php echo getDomainDescription($row['domain'],$domainRows)." (".$row['domain'].")";?></td>
 		
     </tr>
-	<?php endforeach; ?>
+	<?php 
+		}
+		endforeach; 
+		?>
 
 
 	</tbody>
