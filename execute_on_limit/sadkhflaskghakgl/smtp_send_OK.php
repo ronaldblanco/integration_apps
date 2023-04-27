@@ -35,6 +35,8 @@ $email = (isset($_GET['sendto'])) ? $_GET['sendto'] : $env['sendtoemail'];
 $emailfrom = $env['emailfrom'];
 $namefrom = $env['namefrom'];
 
+$email = explode(",",$email);
+
 // If the e-mail is not working, change the debug option to 2 | $debug = 2;
 $debug = 2;
 
@@ -61,8 +63,10 @@ try {
 	$mail->SMTPSecure = 'tls';                               // Enable encryption, 'ssl' also accepted
 	$mail->Port = 587;   							       // TCP port to connect to
 
-	$mail->AddAddress($email);	 						       // Add another recipient
-
+	foreach($email as $addr){
+		if($addr != "") $mail->AddAddress($addr);	 						       // Add another recipient
+	}
+	
 	//$mail->AddAddress('person2@domain.com', 'Person 2');     // Add a secondary recipient
 	//$mail->AddCC('person3@domain.com', 'Person 3');          // Add a "Cc" address. 
 	//$mail->AddBCC('person4@domain.com', 'Person 4');         // Add a "Bcc" address. 
